@@ -12,8 +12,9 @@ def checkUsage(args):
     """
     Checks if the script is called properly.
     """
-    if len(args) < 3:
-        print(f"Usage: {args}", file=sys.stderr)
+    err_msg = "Usage: ./markdown2html.py <input_file> <output_file>"
+    if len(args) != 3:
+        print(err_msg, file=sys.stderr)
         sys.exit(1)
 
 
@@ -21,8 +22,8 @@ def checkReadmeExists(readme):
     """
     Checks if the Markdown file exists.
     """
-    if not os.path.exists(readme):
-        print(f"Missing {readme}")
+    if not (os.path.exists(readme) and os.path.isfile(readme)):
+        print(f"Missing {readme}", file=sys.stderr)
         sys.exit(1)
 
 
