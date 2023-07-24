@@ -6,6 +6,7 @@ A script that converts Markdown to HTML.
 import sys
 import os
 import hashlib
+import re
 
 
 def checkUsage(args):
@@ -175,17 +176,14 @@ def parseHeadings(lines):
     """
     html_lines = []
     for line in lines:
-        level = 0
-
-        while level < len(line) and line[level] == '#':
-            level += 1
-
-        if level > 0:
-            heading_text = line[level+1:]
-            html_lines.append(f"<h{level}>{heading_text}</h{level}>")
+        # Check for Markdown headings
+        match = re.match(r"^(#+) (.*)$", line)
+        if match:
+            level = len(match.group(1))
+            text = match.group(2)
+            html_lines.append(f"<h{level}>{text}</h{level}>")
         else:
             html_lines.append(line)
-
     return html_lines
 
 
@@ -224,12 +222,13 @@ def parseParagraph(lines):
     Parses the lines for Paragraphs.
     """
     html_lines = []
+
     hasOpenParagraph = False
     i = 0
     while i < len(lines):
         line = lines[i]
 
-        if not isEmptyLine(line) and isParagraph(line):
+        if (not isEmptyLine(line)) and isParagraph(line):
             if not hasOpenParagraph:
                 html_lines.append('<p>')
 
@@ -238,8 +237,10 @@ def parseParagraph(lines):
             next_line_index = i + 1
             if next_line_index < len(lines):
                 next_line = lines[next_line_index]
-                if not isEmptyLine(next_line) and isParagraph(next_line):
+                if (not isEmptyLine(next_line)) and isParagraph(next_line):
                     html_lines.append('</br>')
+                else:
+                    html_lines.append(next_line)
 
             hasOpenParagraph = True
 
@@ -276,7 +277,15 @@ def isParagraph(line):
     """
     Checks if a line is a paragraph
     """
-    return not line.startswith(('#', '- ', '* '))
+    return not line.startswith(('# ',
+                                '## ',
+                                '### ',
+                                '#### ',
+                                '##### ',
+                                '###### ',
+                                '- ',
+                                '* '
+                                ))
 
 
 def isEmptyLine(line):
@@ -344,9 +353,9 @@ def convert_markdown_to_html(lines):
         parseEmphasis,
         parseBold,
         parseParagraph,
+        parseHeadings,
         parseOrderedList,
         parseUnorderedList,
-        parseHeadings,
         removeEmptyLines
     ]
 
