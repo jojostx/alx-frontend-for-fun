@@ -1,0 +1,16 @@
+/*
+  - assigns text color #FF0000 to button tags.
+  - assigns text color #00FF00 to button tags
+  when the user hovers over button tags.
+*/
+
+$text-red: #FF0000;
+$text-green: #00FF00;
+
+button {
+  color: $text-red;
+
+  &:hover {
+    color: $text-green;
+  }
+}

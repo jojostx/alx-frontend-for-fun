@@ -1,0 +1,18 @@
+/*
+  - assigns no margin or padding to body tags
+  - assigns margin 10px to all the p tags inside body tags using
+  nested declarations
+*/
+
+$m-0: 0;
+$m-10: 10px;
+$p-0: 0;
+
+body {
+  margin: $m-0;
+  padding: $p-0;
+
+  p {
+    margin: $m-10;
+  }
+}

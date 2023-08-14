@@ -1,0 +1,16 @@
+/*
+  - assigns text color #3D3D3D to elements inside body tags.
+  - assigns text color #FF0000 to any elements of class .red
+  inside body tags using nested declarations
+*/
+
+$text-primary: #3D3D3D;
+$text-red: #FF0000;
+
+body {
+  color: $text-primary;
+
+  .red {
+    color: $text-red;
+  }
+}
